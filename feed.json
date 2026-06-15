@@ -1,0 +1,22 @@
+{
+  "providerName": "Waypoint Church",
+  "lastUpdated": "2026-06-15T00:00:00Z",
+  "language": "en",
+  "categories": [
+    {
+      "name": "Sermons",
+      "items": [
+        {
+          "id": "EXAMPLE_ID_REPLACE_ME",
+          "title": "Example Sermon Title",
+          "shortDescription": "This is a placeholder entry. Use the Roku Feed Manager form to replace this with your real content.",
+          "thumbnail": "https://i.vimeocdn.com/video/example_thumb.jpg",
+          "streamUrl": "",
+          "embedUrl": "https://player.vimeo.com/video/EXAMPLE_ID_REPLACE_ME",
+          "duration": 2400,
+          "releaseDate": "2026-06-08"
+        }
+      ]
+    }
+  ]
+}

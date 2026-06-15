@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Waypoint Roku Feed Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,500;0,700;0,800;1,500&family=Newsreader:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --foundation: #272626;
+    --linen: #F0EAD4;
+    --cypress: #508C77;
+    --meadow: #CCDCCA;
+    --goldenhour: #EC6432;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
+    background: var(--linen);
+    color: var(--foundation);
+  }
+
+  header {
+    background: var(--foundation);
+    color: var(--white);
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  header .mark {
+    background: var(--cypress);
+    width: 40px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  header .mark svg { width: 24px; height: 18px; display: block; }
+
+  header h1 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  header .sub {
+    font-size: 13px;
+    color: var(--meadow);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 6px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(39,38,38,0.08);
+  }
+
+  .card h2 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card h2 .step {
+    background: var(--cypress);
+    color: var(--white);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .card .hint {
+    font-size: 13px;
+    color: #6b6968;
+    margin: 0 0 18px;
+    line-height: 1.5;
+  }
+
+  label {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+    margin-top: 16px;
+  }
+  label:first-of-type { margin-top: 0; }
+
+  label .opt {
+    font-weight: 500;
+    color: #9a9794;
+    font-size: 12px;
+    text-transform: none;
+  }
+
+  input[type="text"], input[type="url"], textarea, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--meadow);
+    border-radius: 4px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    color: var(--foundation);
+    background: var(--linen);
+    transition: border-color 0.15s;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--cypress);
+  }
+
+  textarea { resize: vertical; min-height: 70px; }
+
+  .row { display: flex; gap: 12px; }
+  .row > div { flex: 1; }
+
+  button {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.05s;
+  }
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-primary {
+    background: var(--cypress);
+    color: var(--white);
+    padding: 12px 22px;
+    font-size: 15px;
+  }
+  .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+
+  .btn-secondary {
+    background: var(--meadow);
+    color: var(--foundation);
+    padding: 10px 16px;
+  }
+  .btn-secondary:hover:not(:disabled) { opacity: 0.85; }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--goldenhour);
+    padding: 6px 10px;
+    font-size: 12px;
+    border: 1px solid var(--goldenhour);
+  }
+
+  .fetch-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .fetch-row > div:first-child { flex: 1; }
+
+  .preview {
+    margin-top: 18px;
+    display: none;
+    border: 1.5px solid var(--meadow);
+    border-radius: 4px;
+    padding: 14px;
+    background: var(--linen);
+    gap: 14px;
+  }
+  .preview.show { display: flex; }
+  .preview img {
+    width: 120px;
+    height: 68px;
+    object-fit: cover;
+    border-radius: 3px;
+    background: var(--meadow);
+    flex-shrink: 0;
+  }
+  .preview .meta { flex: 1; min-width: 0; }
+  .preview .meta .title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .preview .meta .id { font-size: 12px; color: #6b6968; font-family: monospace; }
+  .preview .meta .desc {
+    font-size: 12px; color: #6b6968; margin-top: 6px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .status {
+    font-size: 13px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 4px;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.error { background: #fbe8e1; color: #b3431a; }
+  .status.ok { background: var(--meadow); color: #2f5345; }
+  .status.loading { background: var(--linen); color: #6b6968; }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 22px;
+  }
+
+  .queue {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .queue li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--meadow);
+  }
+  .queue li:last-child { border-bottom: none; }
+  .queue img {
+    width: 64px; height: 36px; object-fit: cover; border-radius: 3px; background: var(--meadow);
+    flex-shrink: 0;
+  }
+  .queue .qmeta { flex: 1; min-width: 0; }
+  .queue .qmeta .t { font-weight: 700; font-size: 13px; }
+  .queue .qmeta .c { font-size: 12px; color: #6b6968; }
+  .queue .empty {
+    color: #9a9794; font-size: 13px; padding: 20px 0; text-align: center;
+  }
+
+  .feed-output {
+    font-family: monospace;
+    font-size: 12px;
+    background: var(--foundation);
+    color: var(--meadow);
+    padding: 16px;
+    border-radius: 4px;
+    overflow: auto;
+    max-height: 320px;
+    white-space: pre;
+    line-height: 1.5;
+  }
+
+  .copy-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: #9a9794;
+    padding: 0 24px 40px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="mark">
+    <svg viewBox="0 0 60 45" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5 L20 5 L13 22 L5 5 Z" fill="#272626"/>
+      <path d="M28 5 L42 5 L25 40 L11 40 Z" fill="#272626"/>
+      <path d="M48 5 L62 5 L45 40 L31 40 Z" fill="#272626"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Roku Feed Manager</h1>
+    <div class="sub">Waypoint Church — Internal Tool</div>
+  </div>
+</header>
+
+<main>
+
+  <div class="card">
+    <h2><span class="step">1</span> Pull video from Vimeo</h2>
+    <p class="hint">Paste the full Vimeo link or just the video ID, then click Fetch. This pulls the title, thumbnail, and description automatically.</p>
+
+    <label for="vimeoUrl">Vimeo video link or ID</label>
+    <div class="fetch-row">
+      <div>
+        <input type="text" id="vimeoUrl" placeholder="https://vimeo.com/123456789 or 123456789" />
+      </div>
+      <button class="btn-secondary" id="fetchBtn">Fetch</button>
+    </div>
+
+    <div class="status" id="fetchStatus"></div>
+
+    <div class="preview" id="preview">
+      <img id="previewThumb" src="" alt="" />
+      <div class="meta">
+        <div class="title" id="previewTitle"></div>
+        <div class="id" id="previewId"></div>
+        <div class="desc" id="previewDesc"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="step">2</span> Edit details for the app</h2>
+    <p class="hint">These are what people will see on the Roku app. Vimeo's title/description are pre-filled — edit freely.</p>
+
+    <label for="title">Title</label>
+    <input type="text" id="title" placeholder="e.g. The Long Way Home — Week 3" />
+
+    <label for="description">Description</label>
+    <textarea id="description" placeholder="A short summary that appears below the video on Roku."></textarea>
+
+    <div class="row">
+      <div>
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="Sermons">Sermons</option>
+          <option value="Podcast">Podcast</option>
+          <option value="Special Events">Special Events</option>
+        </select>
+      </div>
+      <div>
+        <label for="releaseDate">Date <span class="opt">(optional, defaults to today)</span></label>
+        <input type="text" id="releaseDate" placeholder="YYYY-MM-DD" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="step">3</span> Add to feed queue</h2>
+    <p class="hint">Each entry you add appears below. When you're done adding videos for the week, click "Update Feed" to generate the file to upload to GitHub.</p>
+
+    <div class="actions">
+      <button class="btn-primary" id="addBtn">Add to queue</button>
+      <span style="font-size:13px; color:#6b6968;" id="queueCount">0 items queued</span>
+    </div>
+
+    <ul class="queue" id="queueList">
+      <li class="empty">No items queued yet. Fetch a video above and click "Add to queue."</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2><span class="step">4</span> Generate updated feed file</h2>
+    <p class="hint">
+      This combines your current live feed with the new items above, sorted newest-first.
+      Copy the result and paste it into <code>feed.json</code> in your GitHub repo
+      (or download and upload the file directly).
+    </p>
+
+    <div class="row">
+      <div style="flex:2">
+        <label for="currentFeedUrl">Current feed.json URL <span class="opt">(so we can merge, not overwrite)</span></label>
+        <input type="text" id="currentFeedUrl" placeholder="https://YOUR-GITHUB-USERNAME.github.io/waypoint-roku/feed.json" />
+      </div>
+      <div style="flex:1; display:flex; align-items:flex-end;">
+        <button class="btn-secondary" id="loadFeedBtn" style="width:100%;">Load current feed</button>
+      </div>
+    </div>
+
+    <div class="status" id="feedStatus"></div>
+
+    <div class="actions" style="margin-top:18px;">
+      <button class="btn-primary" id="generateBtn">Generate updated feed.json</button>
+      <button class="btn-secondary" id="downloadBtn" style="display:none;">Download feed.json</button>
+    </div>
+
+    <div id="outputWrap" style="display:none; margin-top:16px;">
+      <div class="feed-output" id="feedOutput"></div>
+      <div class="copy-bar">
+        <button class="btn-secondary" id="copyBtn">Copy to clipboard</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Waypoint Church — Roku Feed Manager · Configure your Worker URL in the script before first use.
+</footer>
+
+<script>
+  // ====== CONFIGURE THIS ======
+  // Replace with your deployed Cloudflare Worker URL from worker/worker.js
+  const WORKER_URL = "https://waypoint-vimeo-proxy.YOUR-SUBDOMAIN.workers.dev";
+  // =============================
+
+  let fetchedVideo = null;
+  let queue = [];
+  let currentFeed = null; // loaded existing feed.json
+
+  const el = (id) => document.getElementById(id);
+
+  function extractVimeoId(input) {
+    input = input.trim();
+    // Match plain numeric ID
+    if (/^\d+$/.test(input)) return input;
+    // Match vimeo.com/123456 or vimeo.com/channels/x/123456 or player.vimeo.com/video/123456
+    const match = input.match(/(\d{6,})/);
+    return match ? match[1] : null;
+  }
+
+  function setStatus(elem, message, type) {
+    elem.textContent = message;
+    elem.className = "status show " + type;
+  }
+  function clearStatus(elem) {
+    elem.className = "status";
+  }
+
+  function secondsToHMS(sec) {
+    sec = Math.floor(sec || 0);
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return [h, m, s].map((v, i) => (i === 0 && v === 0) ? null : String(v).padStart(2, '0')).filter(Boolean).join(':') || '0:00';
+  }
+
+  el('fetchBtn').addEventListener('click', async () => {
+    const raw = el('vimeoUrl').value;
+    const id = extractVimeoId(raw);
+    const statusEl = el('fetchStatus');
+
+    if (!id) {
+      setStatus(statusEl, "Couldn't find a video ID in that link. Paste the full Vimeo URL or just the numeric ID.", "error");
+      return;
+    }
+
+    setStatus(statusEl, "Fetching from Vimeo...", "loading");
+    el('preview').classList.remove('show');
+
+    try {
+      const res = await fetch(`${WORKER_URL}/video?id=${id}`);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      fetchedVideo = data;
+
+      // Populate preview
+      el('previewThumb').src = data.thumbnail || '';
+      el('previewTitle').textContent = data.title;
+      el('previewId').textContent = `Vimeo ID: ${data.id} · ${secondsToHMS(data.duration)}`;
+      el('previewDesc').textContent = data.description || '(no description on Vimeo)';
+      el('preview').classList.add('show');
+
+      // Pre-fill the editable fields
+      el('title').value = data.title || '';
+      el('description').value = data.description || '';
+
+      clearStatus(statusEl);
+    } catch (err) {
+      setStatus(statusEl, "Error: " + err.message + ". Check that your Worker is deployed and the URL is configured.", "error");
+    }
+  });
+
+  el('addBtn').addEventListener('click', () => {
+    if (!fetchedVideo) {
+      alert("Fetch a video from Vimeo first (Step 1).");
+      return;
+    }
+    if (!el('title').value.trim()) {
+      alert("Please enter a title.");
+      return;
+    }
+
+    const releaseDate = el('releaseDate').value.trim() || new Date().toISOString().slice(0, 10);
+
+    queue.push({
+      id: fetchedVideo.id,
+      title: el('title').value.trim(),
+      shortDescription: el('description').value.trim(),
+      thumbnail: fetchedVideo.thumbnail,
+      streamUrl: fetchedVideo.streamUrl,
+      embedUrl: fetchedVideo.embedUrl,
+      duration: fetchedVideo.duration,
+      category: el('category').value,
+      releaseDate: releaseDate,
+    });
+
+    renderQueue();
+
+    // Reset form for next entry
+    fetchedVideo = null;
+    el('vimeoUrl').value = '';
+    el('title').value = '';
+    el('description').value = '';
+    el('releaseDate').value = '';
+    el('preview').classList.remove('show');
+    clearStatus(el('fetchStatus'));
+  });
+
+  function renderQueue() {
+    const list = el('queueList');
+    el('queueCount').textContent = `${queue.length} item${queue.length === 1 ? '' : 's'} queued`;
+
+    if (queue.length === 0) {
+      list.innerHTML = '<li class="empty">No items queued yet. Fetch a video above and click "Add to queue."</li>';
+      return;
+    }
+
+    list.innerHTML = queue.map((item, i) => `
+      <li>
+        <img src="${item.thumbnail || ''}" alt="" />
+        <div class="qmeta">
+          <div class="t">${escapeHtml(item.title)}</div>
+          <div class="c">${item.category} · ${item.releaseDate} · ${secondsToHMS(item.duration)}</div>
+        </div>
+        <button class="btn-danger" data-idx="${i}">Remove</button>
+      </li>
+    `).join('');
+
+    list.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(e.target.getAttribute('data-idx'), 10);
+        queue.splice(idx, 1);
+        renderQueue();
+      });
+    });
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  el('loadFeedBtn').addEventListener('click', async () => {
+    const url = el('currentFeedUrl').value.trim();
+    const statusEl = el('feedStatus');
+
+    if (!url) {
+      setStatus(statusEl, "Enter the URL where your feed.json currently lives.", "error");
+      return;
+    }
+
+    setStatus(statusEl, "Loading current feed...", "loading");
+
+    try {
+      const res = await fetch(url + (url.includes('?') ? '&' : '?') + 'cb=' + Date.now());
+      if (!res.ok) throw new Error(`Could not load feed (status ${res.status}). If this is the first time, that's OK — leave this blank and just generate a new feed.`);
+      currentFeed = await res.json();
+      setStatus(statusEl, `Loaded existing feed with ${(currentFeed.categories || []).reduce((sum, c) => sum + (c.items || []).length, 0)} items.`, "ok");
+    } catch (err) {
+      setStatus(statusEl, "Couldn't load existing feed: " + err.message, "error");
+      currentFeed = null;
+    }
+  });
+
+  el('generateBtn').addEventListener('click', () => {
+    if (queue.length === 0 && !currentFeed) {
+      alert("Add at least one item to the queue, or load an existing feed to re-export it.");
+      return;
+    }
+
+    // Start from existing feed structure, or create a fresh one
+    let feed = currentFeed ? JSON.parse(JSON.stringify(currentFeed)) : {
+      providerName: "Waypoint Church",
+      lastUpdated: "",
+      language: "en",
+      categories: []
+    };
+
+    feed.lastUpdated = new Date().toISOString();
+
+    // Group queued items by category
+    queue.forEach(item => {
+      let cat = feed.categories.find(c => c.name === item.category);
+      if (!cat) {
+        cat = { name: item.category, items: [] };
+        feed.categories.push(cat);
+      }
+
+      cat.items.unshift({
+        id: item.id,
+        title: item.title,
+        shortDescription: item.shortDescription,
+        thumbnail: item.thumbnail,
+        streamUrl: item.streamUrl,
+        embedUrl: item.embedUrl,
+        duration: item.duration,
+        releaseDate: item.releaseDate,
+      });
+    });
+
+    // Sort each category's items newest-first by releaseDate
+    feed.categories.forEach(cat => {
+      cat.items.sort((a, b) => (b.releaseDate || '').localeCompare(a.releaseDate || ''));
+    });
+
+    const json = JSON.stringify(feed, null, 2);
+    el('feedOutput').textContent = json;
+    el('outputWrap').style.display = 'block';
+    el('downloadBtn').style.display = 'inline-block';
+    el('downloadBtn').dataset.json = json;
+  });
+
+  el('copyBtn').addEventListener('click', () => {
+    const text = el('feedOutput').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      el('copyBtn').textContent = 'Copied!';
+      setTimeout(() => el('copyBtn').textContent = 'Copy to clipboard', 1500);
+    });
+  });
+
+  el('downloadBtn').addEventListener('click', () => {
+    const json = el('downloadBtn').dataset.json;
+    const blob = new Blob([json], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'feed.json';
+    a.click();
+  });
+</script>
+
+</body>
+</html>
