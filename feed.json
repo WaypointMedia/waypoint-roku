@@ -1,20 +1,50 @@
 {
   "providerName": "Waypoint Church",
-  "lastUpdated": "2026-06-15T00:00:00Z",
+  "lastUpdated": "2026-06-17T21:19:04.701Z",
   "language": "en",
   "categories": [
     {
       "name": "Sermons",
       "items": [
         {
-          "id": "EXAMPLE_ID_REPLACE_ME",
-          "title": "Example Sermon Title",
-          "shortDescription": "This is a placeholder entry. Use the Roku Feed Manager form to replace this with your real content.",
-          "thumbnail": "https://i.vimeocdn.com/video/example_thumb.jpg",
-          "streamUrl": "",
-          "embedUrl": "https://player.vimeo.com/video/EXAMPLE_ID_REPLACE_ME",
-          "duration": 2400,
-          "releaseDate": "2026-06-08"
+          "id": "1196000167",
+          "title": "052426",
+          "shortDescription": "",
+          "thumbnail": "https://i.vimeocdn.com/video/2162003635-787876e1f35e9595a59383f7eae8c5f35e9e7b1f0f0307b64e6a5678e5cb86b4-d_1920x1080?&r=pad&region=us",
+          "streamUrl": "https://player.vimeo.com/progressive_redirect/playback/1196000167/container/8433cc2b-e873-4bf3-b588-34e602718bc5/e6fb2cdb-ded4cbf0/file.mp4%20%281080p%29.mp4?expires=1781817648&loc=external&oauth2_token_id=1816047315&session_id=8b1043959723fb26f3eb216cd1eed44d948207af1781731128&signature=ae66307ab44b967f06736cc031a996b752cd81baf3fbf81253e43d091760a4af&user_id=2514503",
+          "embedUrl": "https://player.vimeo.com/video/1196000167",
+          "duration": 2713,
+          "releaseDate": "2026-06-17"
+        },
+        {
+          "id": "1197419598",
+          "title": "053126",
+          "shortDescription": "",
+          "thumbnail": "https://i.vimeocdn.com/video/2163754831-8b126c5226d1f6050b646fa4dc64226ef216aceb78ff30f806870f0ce8f53ebb-d_1920x1080?&r=pad&region=us",
+          "streamUrl": "https://player.vimeo.com/progressive_redirect/playback/1197419598/container/8332c16b-d153-46fa-b72b-9f92ffbd91e3/645fcb2e-a60df133/file.mp4%20%281080p%29.mp4?expires=1781817632&loc=external&oauth2_token_id=1816047315&session_id=6afd98e9f03624ecd9a4eb36b24f505f22a6db511781731112&signature=e7efbc60c0e3033e8c0a5e5e4c6dbaf286281e1c17d75d147c3e505ed2be140e&user_id=2514503",
+          "embedUrl": "https://player.vimeo.com/video/1197419598",
+          "duration": 2433,
+          "releaseDate": "2026-06-17"
+        },
+        {
+          "id": "1199458652",
+          "title": "060726",
+          "shortDescription": "",
+          "thumbnail": "https://i.vimeocdn.com/video/2166291044-ff7d2aa81033dd7dae889ac3ec904bc731831c3af50b27b7429f69288098ff99-d_1920x1080?&r=pad&region=us",
+          "streamUrl": "https://player.vimeo.com/progressive_redirect/playback/1199458652/container/728a4a25-b3b1-4b41-aa2a-a5b81ead1241/0e2f66a5-1fc647d4/file.mp4%20%281080p%29.mp4?expires=1781817595&loc=external&oauth2_token_id=1816047315&session_id=30d394c9c8d39cbec02a7db18fe710cfaeff475f1781731075&signature=bebba22f5da77e7882938b63a732ac043563aaa911e5e96dda4bd225608b0731&user_id=2514503",
+          "embedUrl": "https://player.vimeo.com/video/1199458652",
+          "duration": 2513,
+          "releaseDate": "2026-06-17"
+        },
+        {
+          "id": "1201479330",
+          "title": "061426",
+          "shortDescription": "",
+          "thumbnail": "https://i.vimeocdn.com/video/2168831591-d39f34b41a377e0dc4eb35583774d92cf83945b9e284e2179e30bae71bfaf9e7-d_1920x1080?&r=pad&region=us",
+          "streamUrl": "https://player.vimeo.com/progressive_redirect/playback/1201479330/container/0fa800cc-a15e-4980-b0fb-8cd3f5177ab3/3e66beaf-44d2a5ba/file.mp4%20%281080p%29.mp4?expires=1781817341&loc=external&oauth2_token_id=1816047315&session_id=fb32ed14cb96883d6f645154166ff5373cc8f1941781730821&signature=30304418af1fa797a4694869c5c984a8365e2aa44e099fcdd563fd130f934fe5&user_id=2514503",
+          "embedUrl": "https://player.vimeo.com/video/1201479330",
+          "duration": 2564,
+          "releaseDate": "2026-06-17"
         }
       ]
     }
